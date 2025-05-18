@@ -199,15 +199,9 @@ export function Layout() {
         {/* Top header with theme toggle (desktop) */}
         {!isMobile && (
           <header className={cn(
-            "sticky top-0 z-10 h-16 shadow-sm flex items-center justify-between px-6",
+            "sticky top-0 z-10 h-16 shadow-sm flex items-center justify-end px-6",
             theme === 'dark' ? "bg-slate-800/70 backdrop-blur-sm" : "bg-white/70 backdrop-blur-sm"
           )}>
-            <span className={cn(
-              "text-2xl font-bold tracking-tight",
-              theme === 'dark' ? "text-slate-100" : "text-slate-900"
-            )}>
-              Activity Board
-            </span>
             <ThemeToggle />
           </header>
         )}
