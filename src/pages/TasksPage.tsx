@@ -143,8 +143,8 @@ export function TasksPage() {
     <div className="h-full flex flex-col">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-800">User Tasks</h1>
-          <p className="text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold tracking-tight mb-1 text-slate-900 dark:text-slate-100">User Tasks</h1>
+          <p className="text-slate-500 dark:text-slate-300 mt-1">
             Create and manage your tasks
           </p>
         </div>
