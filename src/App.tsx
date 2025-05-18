@@ -7,7 +7,8 @@ import { TaskProvider } from './context/TaskContext';
 import { ThemeProvider } from './context/ThemeContext';
 import './App.css';
 
-function App() {
+// Changed to explicit default export
+export default function App() {
   return (
     <ThemeProvider>
       <TaskProvider>
@@ -25,5 +26,3 @@ function App() {
     </ThemeProvider>
   );
 }
-
-export default App;

@@ -1,7 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Toaster } from 'react-hot-toast'
-import App from './App'
+// Using explicit import from file with extension
+import App from './App.tsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -9,4 +10,4 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
     <Toaster position="top-right" />
     <App />
   </React.StrictMode>,
-) 
+)
