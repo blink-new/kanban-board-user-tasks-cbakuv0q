@@ -71,17 +71,16 @@ function SortableSwimLane({ lane, onEdit, onDelete }: SortableSwimLaneProps) {
         >
           <Edit2 size={14} />
         </Button>
-        <AlertDialogTrigger asChild>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
-            disabled={isLastLane}
-            title={isLastLane ? 'At least one swim lane is required' : 'Delete lane'}
-          >
-            <Trash2 size={14} />
-          </Button>
-        </AlertDialogTrigger>
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+          disabled={isLastLane}
+          title={isLastLane ? 'At least one swim lane is required' : 'Delete lane'}
+          onClick={() => onDelete(lane)}
+        >
+          <Trash2 size={14} />
+        </Button>
       </div>
     </div>
   );
@@ -214,31 +213,12 @@ export function SwimLaneManager() {
           >
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {swimLanes.map(lane => (
-                <AlertDialog key={lane.id} open={isDeleteDialogOpen && deletingLane?.id === lane.id} onOpenChange={(open) => {
-                  if (!open) setIsDeleteDialogOpen(false);
-                }}>
-                  <SortableSwimLane 
-                    lane={lane} 
-                    onEdit={openEditDialog} 
-                    onDelete={openDeleteDialog} 
-                  />
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        {tasksByStatus[lane.id]?.length > 0 
-                          ? `This lane contains ${tasksByStatus[lane.id].length} tasks. They will be moved to another lane.`
-                          : "This lane will be permanently deleted."}
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={handleDeleteLane} className="bg-red-500 hover:bg-red-600">
-                        Delete Lane
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+                <SortableSwimLane 
+                  key={lane.id}
+                  lane={lane} 
+                  onEdit={openEditDialog} 
+                  onDelete={openDeleteDialog} 
+                />
               ))}
             </div>
           </SortableContext>
@@ -284,6 +264,24 @@ export function SwimLaneManager() {
           </div>
         </DialogContent>
       </Dialog>
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {deletingLane && tasksByStatus[deletingLane.id]?.length > 0 
+                ? `This lane contains ${tasksByStatus[deletingLane.id].length} tasks. They will be moved to another lane.`
+                : "This lane will be permanently deleted."}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setIsDeleteDialogOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDeleteLane} className="bg-red-500 hover:bg-red-600">
+              Delete Lane
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

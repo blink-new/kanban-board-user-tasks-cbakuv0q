@@ -27,7 +27,7 @@ export const DEFAULT_SWIMLANES: SwimLane[] = [
   { id: 'in-progress', name: 'In-progress', color: 'amber' },
   { id: 'testing', name: 'Testing', color: 'cyan' },
   { id: 'done', name: 'Done', color: 'green' },
-  { id: 'release', name: 'Release', color: 'indigo' },
+  // Removed 'Release' lane
 ];
 
 export const DEFAULT_SWIMLANE_IDS = DEFAULT_SWIMLANES.map(lane => lane.id);
