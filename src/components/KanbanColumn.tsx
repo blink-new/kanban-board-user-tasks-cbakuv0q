@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { cn } from '../lib/utils';
-import { Edit2 } from 'lucide-react';
+import { Edit2, Plus } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { TaskCard } from './TaskCard';
 import { useTaskContext } from '../context/TaskContext';
 import { useTheme } from '../context/ThemeContext';
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
+import { TaskForm } from './TaskForm';
 
 interface KanbanColumnProps {
   laneId: string;
@@ -140,11 +142,9 @@ export function KanbanColumn({ laneId, taskIds }: KanbanColumnProps) {
 
   return (
     <div 
-      // Attach setNodeRef to the main column div to make the whole column droppable
-      // id prop here is for general HTML, useDroppable id is for dnd-kit
       className={cn(
         "h-full flex flex-col min-w-[250px] md:min-w-[300px] shadow-md rounded-lg overflow-hidden",
-        isOver && "shadow-lg ring-2 ring-offset-2 ring-indigo-500", // Enhanced visual feedback from useDroppable
+        isOver && "shadow-lg ring-2 ring-offset-2 ring-indigo-500",
         theme === 'dark' ? "ring-offset-slate-900" : "ring-offset-white"
       )}
     >
@@ -187,40 +187,47 @@ export function KanbanColumn({ laneId, taskIds }: KanbanColumnProps) {
           )}
         </div>
       </div>
-      
-      {/* This inner div will be the primary droppable area, especially for empty columns */}
       <div 
-        ref={setNodeRef} // This makes this div the droppable target for dnd-kit
+        ref={setNodeRef}
         className={cn(
-          "border-x border-b p-3 flex-1 transition-all duration-200 min-h-[100px]", // Ensure min-height for empty columns
+          "border-x border-b p-3 flex-1 transition-all duration-200 min-h-[100px] flex flex-col justify-between",
           getColumnBackground(swimLane.color, isOver)
         )}
       >
         {taskIds.length === 0 ? (
-          <div 
-            className={cn(
+          <>
+            <div className={cn(
               "h-full flex items-center justify-center text-sm",
               isOver 
                 ? theme === 'dark' ? "text-slate-100 font-medium" : "text-gray-800 font-medium" 
                 : "text-muted-foreground"
-            )}
-          >
-            <div 
-              className={cn(
+            )}>
+              <div className={cn(
                 "p-4 rounded-md transition-all duration-200",
                 isOver && (theme === 'dark' 
                   ? "bg-slate-800/50 border border-dashed border-slate-600" 
                   : "bg-white/50 border border-dashed border-gray-400")
-              )}
-            >
-              {isOver ? "Drop task here" : "No tasks yet"}
+              )}>
+                {isOver ? "Drop task here" : "No tasks yet"}
+              </div>
             </div>
-          </div>
+            <div className="flex justify-center mt-4">
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="bg-indigo-600 hover:bg-indigo-700 text-white w-full">
+                    <Plus className="h-4 w-4 mr-2" />
+                    Create New Task
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[600px]">
+                  <TaskForm onSuccess={() => {}} />
+                </DialogContent>
+              </Dialog>
+            </div>
+          </>
         ) : (
           <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
-            <div 
-              className="h-full overflow-y-auto pr-1 space-y-3" 
-            >
+            <div className="h-full overflow-y-auto pr-1 space-y-3">
               {taskIds.map((taskId) => (
                 <TaskCard key={taskId} task={tasks[taskId]} />
               ))}
