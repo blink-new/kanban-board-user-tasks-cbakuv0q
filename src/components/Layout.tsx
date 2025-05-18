@@ -2,12 +2,15 @@ import { Outlet, useLocation, Link } from 'react-router-dom';
 import { LayoutDashboard, ListTodo, Settings as SettingsIcon } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { cn } from '../lib/utils';
+import { ThemeToggle } from './ThemeToggle';
+import { useTheme } from '../context/ThemeContext';
 
 export function Layout() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const sidebarRef = useRef<HTMLDivElement>(null);
+  const { theme } = useTheme();
 
   // Check for mobile viewport
   useEffect(() => {
@@ -36,7 +39,10 @@ export function Layout() {
 
   return (
     <div className={cn(
-      "flex min-h-screen bg-gradient-to-b from-slate-50 to-slate-200 text-slate-800"
+      "flex min-h-screen",
+      theme === 'dark' 
+        ? "bg-gradient-to-b from-slate-900 to-slate-800 text-slate-100" 
+        : "bg-gradient-to-b from-slate-50 to-slate-200 text-slate-800"
     )}>
       {/* Sidebar Backdrop (mobile only) */}
       {isMobile && sidebarOpen && (
@@ -50,7 +56,10 @@ export function Layout() {
         ref={sidebarRef}
         className={cn(
           "fixed top-0 left-0 z-40 h-full transition-all duration-300 ease-in-out",
-          "bg-indigo-900 text-white shadow-xl",
+          theme === 'dark' 
+            ? "bg-indigo-950 text-white" 
+            : "bg-indigo-900 text-white",
+          "shadow-xl",
           isMobile
             ? sidebarOpen 
               ? "translate-x-0 w-64" 
@@ -64,7 +73,10 @@ export function Layout() {
         onMouseLeave={handleMouseLeave}
       >
         {/* Sidebar Header (no icons) */}
-        <div className="h-16 px-4 flex items-center border-b border-indigo-800">
+        <div className={cn(
+          "h-16 px-4 flex items-center justify-between border-b",
+          theme === 'dark' ? "border-indigo-900" : "border-indigo-800"
+        )}>
           <Link 
             to="/" 
             className={cn(
@@ -74,6 +86,9 @@ export function Layout() {
           >
             StroFlo
           </Link>
+          {sidebarOpen && (
+            <ThemeToggle className="h-8 w-8" />
+          )}
         </div>
         {/* Sidebar Navigation */}
         <nav className="flex-1 px-3 py-4">
@@ -83,9 +98,12 @@ export function Layout() {
                 to="/"
                 className={cn(
                   "flex items-center px-3 py-3 rounded-lg transition-all",
-                  "hover:bg-indigo-800 group",
+                  theme === 'dark' 
+                    ? "hover:bg-indigo-900" 
+                    : "hover:bg-indigo-800",
+                  "group",
                   location.pathname === "/"
-                    ? "bg-indigo-800 text-white"
+                    ? theme === 'dark' ? "bg-indigo-900 text-white" : "bg-indigo-800 text-white"
                     : "text-indigo-100"
                 )}
               >
@@ -103,9 +121,12 @@ export function Layout() {
                 to="/tasks"
                 className={cn(
                   "flex items-center px-3 py-3 rounded-lg transition-all",
-                  "hover:bg-indigo-800 group",
+                  theme === 'dark' 
+                    ? "hover:bg-indigo-900" 
+                    : "hover:bg-indigo-800",
+                  "group",
                   location.pathname === "/tasks"
-                    ? "bg-indigo-800 text-white"
+                    ? theme === 'dark' ? "bg-indigo-900 text-white" : "bg-indigo-800 text-white"
                     : "text-indigo-100"
                 )}
               >
@@ -123,9 +144,12 @@ export function Layout() {
                 to="/settings"
                 className={cn(
                   "flex items-center px-3 py-3 rounded-lg transition-all",
-                  "hover:bg-indigo-800 group",
+                  theme === 'dark' 
+                    ? "hover:bg-indigo-900" 
+                    : "hover:bg-indigo-800",
+                  "group",
                   location.pathname === "/settings"
-                    ? "bg-indigo-800 text-white"
+                    ? theme === 'dark' ? "bg-indigo-900 text-white" : "bg-indigo-800 text-white"
                     : "text-indigo-100"
                 )}
               >
@@ -141,7 +165,10 @@ export function Layout() {
           </ul>
         </nav>
         {/* Sidebar Footer */}
-        <div className="px-3 py-4 border-t border-indigo-800">
+        <div className={cn(
+          "px-3 py-4 border-t",
+          theme === 'dark' ? "border-indigo-900" : "border-indigo-800"
+        )}>
           <div className={cn(
             "flex items-center px-2 transition-opacity duration-200",
             (!sidebarOpen && !isMobile) && "opacity-0"
@@ -167,13 +194,30 @@ export function Layout() {
       )}>
         {/* Mobile Header */}
         {isMobile && (
-          <header className="sticky top-0 z-10 h-16 bg-white shadow-sm flex items-center px-4">
+          <header className={cn(
+            "sticky top-0 z-10 h-16 shadow-sm flex items-center justify-between px-4",
+            theme === 'dark' ? "bg-slate-800" : "bg-white"
+          )}>
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="mr-2 p-2 rounded-md"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
             <Link to="/" className="text-xl font-bold">
               StroFlo
             </Link>
+            <ThemeToggle />
           </header>
         )}
-        <main className="flex-1 p-4 md:p-6">
+        <main className={cn(
+          "flex-1 p-4 md:p-6",
+          theme === 'dark' 
+            ? "text-slate-100" 
+            : "text-slate-800"
+        )}>
           <Outlet />
         </main>
       </div>

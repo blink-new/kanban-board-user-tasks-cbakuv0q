@@ -11,6 +11,7 @@ import { Badge } from './ui/badge';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from './ui/alert-dialog';
 import { ChevronRight, Edit2, GripHorizontal, Plus, Trash2 } from 'lucide-react';
 import { cn } from '../lib/utils';
+import { useTheme } from '../context/ThemeContext';
 
 interface SortableSwimLaneProps {
   lane: SwimLane;
@@ -23,6 +24,8 @@ function SortableSwimLane({ lane, onEdit, onDelete }: SortableSwimLaneProps) {
     id: lane.id,
   });
   const { swimLanes } = useTaskContext();
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
   const isLastLane = swimLanes.length === 1;
 
   const style = {
@@ -33,18 +36,34 @@ function SortableSwimLane({ lane, onEdit, onDelete }: SortableSwimLaneProps) {
   };
 
   const getColorClass = (color: string) => {
-    switch (color) {
-      case 'blue': return 'bg-blue-100 border-blue-300 text-blue-800';
-      case 'purple': return 'bg-purple-100 border-purple-300 text-purple-800';
-      case 'amber': return 'bg-amber-100 border-amber-300 text-amber-800';
-      case 'cyan': return 'bg-cyan-100 border-cyan-300 text-cyan-800';
-      case 'green': return 'bg-green-100 border-green-300 text-green-800';
-      case 'indigo': return 'bg-indigo-100 border-indigo-300 text-indigo-800';
-      case 'pink': return 'bg-pink-100 border-pink-300 text-pink-800';
-      case 'rose': return 'bg-rose-100 border-rose-300 text-rose-800';
-      case 'orange': return 'bg-orange-100 border-orange-300 text-orange-800';
-      case 'teal': return 'bg-teal-100 border-teal-300 text-teal-800';
-      default: return 'bg-gray-100 border-gray-300 text-gray-800';
+    if (isDark) {
+      switch (color) {
+        case 'blue': return 'bg-blue-900/40 border-blue-800 text-blue-100';
+        case 'purple': return 'bg-purple-900/40 border-purple-800 text-purple-100';
+        case 'amber': return 'bg-amber-900/40 border-amber-800 text-amber-100';
+        case 'cyan': return 'bg-cyan-900/40 border-cyan-800 text-cyan-100';
+        case 'green': return 'bg-green-900/40 border-green-800 text-green-100';
+        case 'indigo': return 'bg-indigo-900/40 border-indigo-800 text-indigo-100';
+        case 'pink': return 'bg-pink-900/40 border-pink-800 text-pink-100';
+        case 'rose': return 'bg-rose-900/40 border-rose-800 text-rose-100';
+        case 'orange': return 'bg-orange-900/40 border-orange-800 text-orange-100';
+        case 'teal': return 'bg-teal-900/40 border-teal-800 text-teal-100';
+        default: return 'bg-slate-800/40 border-slate-700 text-slate-100';
+      }
+    } else {
+      switch (color) {
+        case 'blue': return 'bg-blue-100 border-blue-300 text-blue-800';
+        case 'purple': return 'bg-purple-100 border-purple-300 text-purple-800';
+        case 'amber': return 'bg-amber-100 border-amber-300 text-amber-800';
+        case 'cyan': return 'bg-cyan-100 border-cyan-300 text-cyan-800';
+        case 'green': return 'bg-green-100 border-green-300 text-green-800';
+        case 'indigo': return 'bg-indigo-100 border-indigo-300 text-indigo-800';
+        case 'pink': return 'bg-pink-100 border-pink-300 text-pink-800';
+        case 'rose': return 'bg-rose-100 border-rose-300 text-rose-800';
+        case 'orange': return 'bg-orange-100 border-orange-300 text-orange-800';
+        case 'teal': return 'bg-teal-100 border-teal-300 text-teal-800';
+        default: return 'bg-gray-100 border-gray-300 text-gray-800';
+      }
     }
   };
 
@@ -74,7 +93,7 @@ function SortableSwimLane({ lane, onEdit, onDelete }: SortableSwimLaneProps) {
         <Button 
           variant="ghost" 
           size="sm" 
-          className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+          className="h-7 w-7 p-0 text-red-500 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/30"
           disabled={isLastLane}
           title={isLastLane ? 'At least one swim lane is required' : 'Delete lane'}
           onClick={() => onDelete(lane)}
@@ -94,6 +113,8 @@ export function SwimLaneManager() {
   const [newLaneName, setNewLaneName] = useState('');
   const [editingLane, setEditingLane] = useState<SwimLane | null>(null);
   const [deletingLane, setDeletingLane] = useState<SwimLane | null>(null);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -200,7 +221,10 @@ export function SwimLaneManager() {
         </Dialog>
       </div>
 
-      <div className="border rounded-md p-4 bg-background">
+      <div className={cn(
+        "border rounded-md p-4",
+        isDark ? "bg-slate-900 border-slate-800" : "bg-background"
+      )}>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}

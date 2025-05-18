@@ -4,15 +4,17 @@ import { CSS } from '@dnd-kit/utilities';
 import { cn } from '../lib/utils';
 import { Task, Priority } from '../types/task';
 import { Badge } from './ui/badge';
-// Remove the problematic import
-// import { formatDate } from '../lib/formatters';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { useTheme } from '../context/ThemeContext';
 
 interface TaskCardProps {
   task: Task;
 }
 
 export function TaskCard({ task }: TaskCardProps) {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+  
   // Add local formatDate function
   const formatDate = (dateString: string): string => {
     try {
@@ -50,7 +52,11 @@ export function TaskCard({ task }: TaskCardProps) {
     touchAction: 'none',
   };
 
-  const priorityColors: Record<Priority, string> = {
+  const priorityColors: Record<Priority, string> = isDark ? {
+    1: 'text-red-400 bg-red-950/50 border-red-800',
+    2: 'text-amber-400 bg-amber-950/50 border-amber-800',
+    3: 'text-blue-400 bg-blue-950/50 border-blue-800',
+  } : {
     1: 'text-red-600 bg-red-50 border-red-200',
     2: 'text-amber-600 bg-amber-50 border-amber-200',
     3: 'text-blue-600 bg-blue-50 border-blue-200',
@@ -69,18 +75,31 @@ export function TaskCard({ task }: TaskCardProps) {
       {...attributes}
       {...listeners}
       className={cn(
-        'bg-white rounded-md shadow-sm border p-3 hover:shadow-md transition-shadow space-y-2',
+        'rounded-md shadow-sm border p-3 hover:shadow-md transition-shadow space-y-2',
+        isDark 
+          ? 'bg-slate-800 border-slate-700 text-slate-100' 
+          : 'bg-white border-slate-200 text-slate-900',
         isDragging ? 'shadow-lg ring-2 ring-primary/20' : ''
       )}
       data-task-id={task.id}
       data-droppable-id={task.status}
     >
       <div className="flex justify-between items-start gap-2">
-        <h3 className="font-medium text-sm text-gray-900 line-clamp-2">{task.title}</h3>
+        <h3 className={cn(
+          "font-medium text-sm line-clamp-2",
+          isDark ? "text-slate-100" : "text-gray-900"
+        )}>
+          {task.title}
+        </h3>
       </div>
 
       {task.description && (
-        <p className="text-xs text-gray-500 line-clamp-2">{task.description}</p>
+        <p className={cn(
+          "text-xs line-clamp-2",
+          isDark ? "text-slate-400" : "text-gray-500"
+        )}>
+          {task.description}
+        </p>
       )}
 
       <div className="flex flex-wrap gap-2 pt-1">
@@ -89,7 +108,12 @@ export function TaskCard({ task }: TaskCardProps) {
         </Badge>
 
         {task.label && (
-          <Badge variant="outline" className="text-xs bg-violet-50 text-violet-600 border-violet-200">
+          <Badge variant="outline" className={cn(
+            "text-xs",
+            isDark 
+              ? "bg-violet-950/50 text-violet-400 border-violet-800" 
+              : "bg-violet-50 text-violet-600 border-violet-200"
+          )}>
             <Tag size={12} className="mr-1" /> {task.label}
           </Badge>
         )}
@@ -98,7 +122,12 @@ export function TaskCard({ task }: TaskCardProps) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Badge variant="outline" className="text-xs bg-cyan-50 text-cyan-600 border-cyan-200">
+                <Badge variant="outline" className={cn(
+                  "text-xs",
+                  isDark 
+                    ? "bg-cyan-950/50 text-cyan-400 border-cyan-800" 
+                    : "bg-cyan-50 text-cyan-600 border-cyan-200"
+                )}>
                   <CalendarIcon size={12} className="mr-1" /> {formatDate(task.desiredDate)}
                 </Badge>
               </TooltipTrigger>
@@ -113,7 +142,12 @@ export function TaskCard({ task }: TaskCardProps) {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Badge variant="outline" className="text-xs bg-green-50 text-green-600 border-green-200">
+                <Badge variant="outline" className={cn(
+                  "text-xs",
+                  isDark 
+                    ? "bg-green-950/50 text-green-400 border-green-800" 
+                    : "bg-green-50 text-green-600 border-green-200"
+                )}>
                   <CalendarCheck size={12} className="mr-1" /> {formatDate(task.actualDeliveryDate)}
                 </Badge>
               </TooltipTrigger>
