@@ -188,38 +188,38 @@ export function TasksPage() {
 
       {/* Priority Counters */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="bg-white rounded-lg shadow p-4 border border-red-100">
+        <div className="rounded-lg shadow p-4 border border-red-100 dark:border-red-900 bg-white dark:bg-slate-900">
           <div className="flex justify-between items-center">
-            <h3 className="font-medium text-slate-700">High Priority</h3>
+            <h3 className="font-medium text-slate-700 dark:text-red-200">High Priority</h3>
             <Badge className="bg-red-500">{priorityCount.high}</Badge>
           </div>
-          <p className="text-sm text-slate-500 mt-1">Priority 1 tasks</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Priority 1 tasks</p>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 border border-yellow-100">
+        <div className="rounded-lg shadow p-4 border border-yellow-100 dark:border-yellow-900 bg-white dark:bg-slate-900">
           <div className="flex justify-between items-center">
-            <h3 className="font-medium text-slate-700">Medium Priority</h3>
+            <h3 className="font-medium text-slate-700 dark:text-yellow-200">Medium Priority</h3>
             <Badge className="bg-yellow-500">{priorityCount.medium}</Badge>
           </div>
-          <p className="text-sm text-slate-500 mt-1">Priority 2 tasks</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Priority 2 tasks</p>
         </div>
-        <div className="bg-white rounded-lg shadow p-4 border border-green-100">
+        <div className="rounded-lg shadow p-4 border border-green-100 dark:border-green-900 bg-white dark:bg-slate-900">
           <div className="flex justify-between items-center">
-            <h3 className="font-medium text-slate-700">Low Priority</h3>
+            <h3 className="font-medium text-slate-700 dark:text-green-200">Low Priority</h3>
             <Badge className="bg-green-500">{priorityCount.low}</Badge>
           </div>
-          <p className="text-sm text-slate-500 mt-1">Priority 3 tasks</p>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">Priority 3 tasks</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-lg border border-slate-200 p-4 mb-6 shadow-sm">
+      <div className="rounded-lg border border-slate-200 dark:border-slate-800 p-4 mb-6 shadow-sm bg-white dark:bg-slate-900">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-medium text-slate-700 flex items-center">
+          <h3 className="font-medium text-slate-700 dark:text-slate-200 flex items-center">
             <Filter className="h-4 w-4 mr-2" />
             Filter Tasks
           </h3>
           {(titleFilter || statusFilter || priorityFilter || labelFilter || desiredDateFilter || deliveredDateFilter) && (
-            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-500">
+            <Button variant="ghost" size="sm" onClick={clearFilters} className="text-slate-500 dark:text-slate-300">
               <X className="h-4 w-4 mr-1" />
               Clear Filters
             </Button>
@@ -304,19 +304,19 @@ export function TasksPage() {
         </div>
       </div>
 
-      <div className="flex-1 rounded-lg border border-slate-200 bg-white shadow">
+      <div className="flex-1 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shadow">
         {allTasks.length > 0 ? (
           <div className="overflow-x-auto">
             <Table>
               <TableHeader>
-                <TableRow className="bg-slate-50">
-                  <TableHead className="font-medium">Title</TableHead>
-                  <TableHead className="font-medium">Status</TableHead>
-                  <TableHead className="font-medium">Priority</TableHead>
-                  <TableHead className="font-medium">Desired Date</TableHead>
-                  <TableHead className="font-medium">Delivered</TableHead>
-                  <TableHead className="font-medium">Label</TableHead>
-                  <TableHead className="text-right font-medium">Actions</TableHead>
+                <TableRow className="bg-slate-50 dark:bg-slate-800">
+                  <TableHead className="font-medium text-slate-700 dark:text-slate-200">Title</TableHead>
+                  <TableHead className="font-medium text-slate-700 dark:text-slate-200">Status</TableHead>
+                  <TableHead className="font-medium text-slate-700 dark:text-slate-200">Priority</TableHead>
+                  <TableHead className="font-medium text-slate-700 dark:text-slate-200">Desired Date</TableHead>
+                  <TableHead className="font-medium text-slate-700 dark:text-slate-200">Delivered</TableHead>
+                  <TableHead className="font-medium text-slate-700 dark:text-slate-200">Label</TableHead>
+                  <TableHead className="text-right font-medium text-slate-700 dark:text-slate-200">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -367,7 +367,7 @@ export function TasksPage() {
           </div>
         ) : (
           <div className="p-8 text-center">
-            <p className="text-slate-500 mb-4">No tasks created yet</p>
+            <p className="text-slate-500 dark:text-slate-400 mb-4">No tasks created yet</p>
           </div>
         )}
       </div>
