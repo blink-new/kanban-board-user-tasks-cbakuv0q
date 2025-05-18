@@ -84,11 +84,9 @@ export function Layout() {
               (!sidebarOpen && !isMobile) && "opacity-0"
             )}
           >
-            StroFlo
+            StorFlo
           </Link>
-          {sidebarOpen && (
-            <ThemeToggle className="h-8 w-8" />
-          )}
+          {/* Theme toggle is now in the top bar instead of here */}
         </div>
         {/* Sidebar Navigation */}
         <nav className="flex-1 px-3 py-4">
@@ -177,8 +175,14 @@ export function Layout() {
               <span className="text-xs font-medium">SF</span>
             </div>
             <div>
-              <p className="text-sm font-medium">StroFlo</p>
-              <p className="text-xs text-indigo-300">Activity Board</p>
+              <p className={cn(
+                "text-sm font-medium",
+                theme === 'dark' ? "text-slate-100" : ""
+              )}>StorFlo</p>
+              <p className={cn(
+                "text-xs",
+                theme === 'dark' ? "text-indigo-200" : "text-indigo-300"
+              )}>Activity Board</p>
             </div>
           </div>
         </div>
@@ -192,6 +196,16 @@ export function Layout() {
             ? "ml-64" 
             : "ml-20"
       )}>
+        {/* Top header with theme toggle (desktop) */}
+        {!isMobile && (
+          <header className={cn(
+            "sticky top-0 z-10 h-16 shadow-sm flex items-center justify-end px-6",
+            theme === 'dark' ? "bg-slate-800/70 backdrop-blur-sm" : "bg-white/70 backdrop-blur-sm"
+          )}>
+            <ThemeToggle />
+          </header>
+        )}
+        
         {/* Mobile Header */}
         {isMobile && (
           <header className={cn(
@@ -207,7 +221,7 @@ export function Layout() {
               </svg>
             </button>
             <Link to="/" className="text-xl font-bold">
-              StroFlo
+              StorFlo
             </Link>
             <ThemeToggle />
           </header>

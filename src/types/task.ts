@@ -11,6 +11,8 @@ export interface Task {
   actualDeliveryDate?: string;
   label: string;
   status: TaskStatus;
+  assignee?: string; // Who is assigned to the task
+  creator?: string; // Who created the task
   createdAt: string;
   updatedAt: string;
 }

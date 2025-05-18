@@ -30,6 +30,8 @@ const createTaskFormSchema = (swimLaneIds: string[]) => {
     priority: z.coerce.number().min(1).max(3).default(2) as z.ZodType<Priority>,
     label: z.string().optional(),
     status: z.string().default(swimLaneIds.length > 0 ? swimLaneIds[0] : ''),
+    assignee: z.string().optional(),
+    creator: z.string().optional(),
   });
 };
 
@@ -66,6 +68,8 @@ export function TaskForm({ existingTask, onSuccess }: TaskFormProps) {
           priority: existingTask.priority,
           label: existingTask.label,
           status: existingTask.status,
+          assignee: existingTask.assignee || '',
+          creator: existingTask.creator || '',
         }
       : {
           title: '',
@@ -73,6 +77,8 @@ export function TaskForm({ existingTask, onSuccess }: TaskFormProps) {
           priority: 2,
           label: '',
           status: swimLaneIds.length > 0 ? swimLaneIds[0] : '',
+          assignee: '',
+          creator: '',
         },
   });
 
@@ -100,6 +106,8 @@ export function TaskForm({ existingTask, onSuccess }: TaskFormProps) {
             priority: 2,
             label: '',
             status: swimLaneIds.length > 0 ? swimLaneIds[0] : '',
+            assignee: '',
+            creator: '',
           });
           setDesiredDate(null);
           setActualDeliveryDate(null);
@@ -112,6 +120,8 @@ export function TaskForm({ existingTask, onSuccess }: TaskFormProps) {
             priority: 2,
             label: '',
             status: swimLaneIds.length > 0 ? swimLaneIds[0] : '',
+            assignee: '',
+            creator: '',
           });
           setDesiredDate(null);
           setActualDeliveryDate(null);
@@ -171,6 +181,42 @@ export function TaskForm({ existingTask, onSuccess }: TaskFormProps) {
                 </FormItem>
               )}
             />
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="assignee"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Who (Assigned to)</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter assignee name" />
+                    </FormControl>
+                    <FormDescription>
+                      Who will be working on this task
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="creator"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Creator</FormLabel>
+                    <FormControl>
+                      <Input {...field} placeholder="Enter creator name" />
+                    </FormControl>
+                    <FormDescription>
+                      Who created this task
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <FormField
               control={form.control}

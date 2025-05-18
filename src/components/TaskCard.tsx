@@ -1,4 +1,4 @@
-import { Paperclip, CalendarIcon, Clock, Tag, CalendarCheck, Info } from 'lucide-react';
+import { Paperclip, CalendarIcon, Clock, Tag, CalendarCheck, Info, User, UserCircle } from 'lucide-react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { cn } from '../lib/utils';
@@ -103,6 +103,46 @@ export function TaskCard({ task }: TaskCardProps) {
       )}
 
       <div className="flex flex-wrap gap-2 pt-1">
+        {task.assignee && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge variant="outline" className={cn(
+                  "text-xs",
+                  isDark 
+                    ? "bg-indigo-950/50 text-indigo-400 border-indigo-800" 
+                    : "bg-indigo-50 text-indigo-600 border-indigo-200"
+                )}>
+                  <User size={12} className="mr-1" /> {task.assignee}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Assigned to</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+
+        {task.creator && (
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Badge variant="outline" className={cn(
+                  "text-xs",
+                  isDark 
+                    ? "bg-pink-950/50 text-pink-400 border-pink-800" 
+                    : "bg-pink-50 text-pink-600 border-pink-200"
+                )}>
+                  <UserCircle size={12} className="mr-1" /> {task.creator}
+                </Badge>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Created by</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        )}
+
         <Badge variant="outline" className={cn('text-xs', priorityColors[task.priority])}>
           <Info size={12} className="mr-1" /> {priorityLabels[task.priority]}
         </Badge>
